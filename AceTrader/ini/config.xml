@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="gb2312"?>
+<brokers>
+	<broker BrokerName="SimNow CTP模拟" BrokerID="9999" UserID="114512">
+		<Server Name="电信模拟" TradingAddress="180.168.146.187:10000" MDAddress="180.168.146.187:10010"/>
+	</broker>
+
+	<broker BrokerName="一德期货" BrokerID="5060" UserID="">
+		<server Name="电信IP直连" TradingAddress="180.166.38.165:41205" MDAddress="180.166.38.165:41213"/>
+	    <server Name="网通IP直连" TradingAddress="210.13.94.50:41205" MDAddress="210.13.94.50:41213"/>
+	</broker>
+	
+	<broker BrokerName="国泰君安" BrokerID="7090" UserID="">
+		<server Name="上海电信" TradingAddress="180.169.75.19:41205" MDAddress="180.169.75.19:41213"/>
+		<server Name="上海联通" TradingAddress="140.206.102.69:41205" MDAddress="140.206.102.69:41213"/>
+		<server Name="北方联通" TradingAddress="202.108.254.178:41205" MDAddress="202.108.254.178:41213"/>
+	</broker>
+	
+	<broker BrokerName="中信期货" BrokerID="66666" UserID="">
+		<server Name="上海电信" TradingAddress="ctp1-front1.citicsf.com:41205" MDAddress="ctp1-md1.citicsf.com:41213"/>
+		<server Name="上海联通" TradingAddress="ctp1-front2.citicsf.com:41205" MDAddress="ctp1-md2.citicsf.com:41213"/>
+		<server Name="北方联通" TradingAddress="ctp1-front9.citicsf.com:41205" MDAddress="ctp1-md9.citicsf.com:41213"/>
+	</broker>
+	
+	<broker BrokerName="国泰君安CTP模拟1" BrokerID="2071" UserID="39702300">
+		<Server Name="仿真1" TradingAddress="180.169.77.111:42205" MDAddress="180.169.77.111:42213"/>
+	</broker>
+</brokers>

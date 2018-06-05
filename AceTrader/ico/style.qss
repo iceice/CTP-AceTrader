@@ -1,0 +1,200 @@
+* {
+	font-family: "宋体";
+	font-size: 12px;
+}
+QPushButton {
+	background-color: rgb(240,240,240);
+}
+
+QGroupBox {
+	font-size: 14px;
+	margin-top: 1ex;
+	padding: 5px 0px 0px 0px;
+}
+QGroupBox::title {
+    subcontrol-origin: margin;
+	left: 10px;
+}
+
+QLabel#insLabel, #numLabel, #priceLable {
+	font-size: 14px;
+}
+
+QComboBox#instruCombo {
+	font-size: 16px;
+	background-color: rgb(240,240,240);
+}
+QComboBox#instruCombo QAbstractItemView::item {
+    height: 18px;
+}
+
+QRadioButton::indicator {
+	width: 14px;
+	height: 14px;
+}
+QRadioButton::indicator::unchecked {
+	image: url(ico/radiobutton-unchecked-md.png);
+}
+QRadioButton::indicator::checked {
+	image: url(ico/radiobutton-checked-md.png);
+}
+QLabel#openLabel, #closeLabel, #todayLabel {
+	font-size: 14px;
+}
+
+QLabel#askPriceLabel {
+	font-size: 12px;
+	font-weight: bold;
+	color: #008000;
+}
+QLabel#lastPriceLabel {
+	font-size: 12px;
+	font-weight: bold;
+}
+QLabel#bidPriceLabel {
+	font-size: 12px;
+	font-weight: bold;
+	color: red;
+}
+
+QPushButton#buyButton {
+	font-size: 20px;
+	font-weight: bold;
+	color: red;
+	background-color: rgb(240,240,240);
+}
+QPushButton#buyButton:disabled {
+	font-size: 20px;
+	font-weight: bold;
+	color: #787878;
+	background-color: rgb(240,240,240);
+}
+QPushButton#SellButton {
+	font-size: 20px;
+	font-weight: bold;
+	color: #008000;
+	background-color: rgb(240,240,240);
+}
+QPushButton#SellButton:disabled {
+	font-size: 20px;
+	font-weight: bold;
+	color: #787878;
+	background-color: rgb(240,240,240);
+}
+QPushButton#settingButton {
+	background-color: rgb(240,240,240);
+}
+
+QLabel#multiLable {
+	font-size: 14px;
+	color: #800000;
+	font-weight: bold;
+}
+QLabel#emptyLable{
+	font-size: 14px;
+	color: #008080;
+	font-weight: bold;
+}
+QLabel#waitLable{
+	font-size: 14px;
+	font-weight: bold;
+}
+QLabel#stopLable{
+	font-size: 14px;
+	color: #000080;
+	font-weight: bold;
+}
+
+QPushButton#orderButton, #stopOrderButton, #tradeMsgButton, #positionButton, #accountButton, #withdrawButton{
+	font-size: 12px;
+	background-color: rgb(240,240,240);
+}
+
+TitleBar#titleBar {
+	border: 0px solid #1883D7;
+	border-left: 1px solid #1883D7; 
+	border-right: 1px solid #1883D7;
+	border-top: 1px solid #1883D7;
+	background-color: white;
+}
+QLabel#whiteLabel, #textLabel{
+	font-size: 12px;
+	font-family: "微软雅黑";
+}
+QToolButton#closeButton,#minimizeButton, #maximizeButton{
+	min-width: 40px;
+	min-height: 30px;
+	background-color: white;
+	border: none;
+}
+QToolButton#closeButton::hover {
+	background-color: #E81123;
+}
+QToolButton#closeButton::pressed {
+	background-color: #F1707A;
+}
+QToolButton#maximizeButton::hover {
+	background-color: #E5E5E5;
+}
+QToolButton#maximizeButton::pressed {
+	background-color: #CACACB;
+}
+QToolButton#minimizeButton::hover {
+	background-color: #E5E5E5;
+}
+QToolButton#minimizeButton::pressed {
+	background-color: #CACACB;
+}
+#MainWindow{
+	border: 1px solid #1883D7; 
+}
+
+
+QTableCornerButton::section{
+	font-weight: bold; 
+	background: qlineargradient(x1 : 0, y1 : 0, x2 : 0, y2 : 1, stop : 0 #FFFFFF, stop: 1.0 #F0F0F0); 
+	border: 0px solid #E0DDDC; 
+	border-bottom: 1px solid #787878; 
+	border-right: 1px solid #787878; 
+	height: 21px; 
+	font-size: 12px;
+}
+QTableCornerButton::disabled{
+	color: black;
+}
+
+
+
+QStatusBar::item {
+	border: 0px
+}
+QLabel#mdstatusLabel, #tradestatusLabel{
+	font-size: 12px;
+}
+
+
+#loginDialog QLabel {
+	font-size: 15px;
+}
+QLabel#statusLabel {
+	font-size: 12px;
+	color: #000080;
+}
+#loginDialog QComboBox {
+	font-size: 14px;
+	height: 20px;
+	background-color: white;
+}
+#loginDialog QComboBox QAbstractItemView::item{
+	 height: 20px;
+}
+#loginDialog QPushButton {
+	font-size: 15px;
+	background-color: rgb(240,240,240);
+}
+
+QLabel#defaultNumLabel {
+	font-size: 12px;
+	font-weight: bold;
+}
+
