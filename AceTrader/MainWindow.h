@@ -65,6 +65,7 @@ private:
 	void connectNoFocus();              //连接后不显示焦点
 	void tradeServer(int d);            //开始下单
 	void cancelOrder();                 //取消订单
+	void quickCancelOrder(int r, int c);
 	void setpositonClose(Positions *p);
 	void OnPriceValueChanged(double);
 private:
@@ -119,6 +120,7 @@ private:
 	QPushButton *withdrawButton;
 
 	OrderTable *orderTable;
+	OrderTable *partOrderTable;
 	PositionTable *positionTable;
 	AccountTable *accountTable;
 	SumTable *tradeTable;

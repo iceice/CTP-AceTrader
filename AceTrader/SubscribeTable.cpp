@@ -121,6 +121,11 @@ bool SubscribeTable::eventFilter(QObject * o, QEvent * e) {
 	return false;
 }
 
+void SubscribeTable::focusOutEvent(QFocusEvent * event)
+{
+	this->clearSelection();
+}
+
 
 /***********************²Ûº¯Êý*********************/
 void SubscribeTable::updateForAdd() {

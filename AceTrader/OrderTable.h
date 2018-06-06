@@ -8,6 +8,9 @@ class OrderTable : public QTableWidget{
 public:
 	OrderTable();
 	~OrderTable();
+	void focusOutEvent(QFocusEvent *event);
 	public slots:
 	void update();
+	void updatePart();
+	void tableItemClicked(int r, int c);
 };

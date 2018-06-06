@@ -21,7 +21,7 @@ SumTable::SumTable(){
 	report->setObjectName("ReportBody");
 	report->setSelectionMode(QAbstractItemView::ExtendedSelection);
 	report->setSelectionBehavior(QAbstractItemView::SelectRows);
-	report->setFocusPolicy(Qt::NoFocus);
+	//report->setFocusPolicy(Qt::NoFocus);
 	report->setShowGrid(false);
 	report->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	report->verticalHeader()->setVisible(false);
@@ -88,8 +88,8 @@ SumTable::SumTable(){
 	lay->setSpacing(0);
 	lay->setMargin(0);
 	delete layout();
+	
 	setLayout(lay);
-
 }
 
 void SumTable::update() {
@@ -169,6 +169,11 @@ void SumTable::update() {
 	sum_header << "ºÏ¼Æ" << "" << "" << "" << "" << QString::number(sum) << "" << "";
 	summary->setHorizontalHeaderLabels(sum_header);
 
+}
+
+void SumTable::focusOutEvent(QFocusEvent * event)
+{
+	report->clearSelection();
 }
 
 void SumTable::OncurrentRowChanged(QItemSelection, QItemSelection){

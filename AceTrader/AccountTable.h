@@ -9,6 +9,7 @@ class AccountTable : public QTableWidget{
 public:
 	AccountTable();
 	~AccountTable();
+	void focusOutEvent(QFocusEvent *event);
 	public slots:
 	void update();
 };

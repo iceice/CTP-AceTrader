@@ -8,6 +8,7 @@ class StopOrderTable : public QTableWidget
 public:
 	StopOrderTable();
 	~StopOrderTable();
+	void focusOutEvent(QFocusEvent *event);
 	public slots:
 	void update();
 };

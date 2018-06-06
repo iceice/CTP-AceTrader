@@ -26,7 +26,7 @@ InsTable::InsTable() {
 	//选中模式
 	this->setSelectionBehavior(QAbstractItemView::SelectRows);
 	this->setSelectionMode(QAbstractItemView::SingleSelection);
-	this->setFocusPolicy(Qt::NoFocus);
+	//this->setFocusPolicy(Qt::NoFocus);
 	//设置不可编辑
 	this->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
@@ -144,6 +144,11 @@ bool InsTable::eventFilter(QObject * o, QEvent * e){
 		}
 	}
 	return false;
+}
+
+void InsTable::focusOutEvent(QFocusEvent * event)
+{
+	this->clearSelection();
 }
 
 /************************槽函数************************/

@@ -11,6 +11,7 @@ public:
 	SubscribeTable();
 	void updateTable();
 	bool eventFilter(QObject* o, QEvent* e);
+	void focusOutEvent(QFocusEvent * event);
 private:
 	private slots :
 	void updateForAdd();

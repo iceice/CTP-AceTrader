@@ -10,6 +10,7 @@ class PositionTable : public QTableWidget{
 public:
 	PositionTable();
 	~PositionTable();
+	void focusOutEvent(QFocusEvent *event);
 	public slots:
 	void update();
 	void updatePrice();

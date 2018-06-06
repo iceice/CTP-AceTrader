@@ -19,17 +19,17 @@ int main(int argc, char *argv[]) {
 	iniComboShow();
 	iniLogin();
 
-	/*LoginDialog *loginDialog = new LoginDialog();
+	LoginDialog *loginDialog = new LoginDialog();
 	loginDialog->setObjectName("loginDialog");
 	loginDialog->setFocus();
-	loginDialog->show();*/
+	loginDialog->show();
 	
-	MainWindow *mw = new MainWindow();
+	/*MainWindow *mw = new MainWindow();
 	mw = new MainWindow();
 	mw->setObjectName("MainWindow");
-	mw->resize(1100, 200);
+	mw->resize(1100, 300);
 	mw->show();
-	mw->setFocus();
+	mw->setFocus();*/
 
 	return a.exec();
 }

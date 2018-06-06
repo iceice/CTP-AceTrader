@@ -18,7 +18,7 @@ PositionTable::PositionTable(){
 	this->verticalHeader()->setVisible(false);
 	this->setSelectionBehavior(QAbstractItemView::SelectRows);
 	this->setSelectionMode(QAbstractItemView::SingleSelection);
-	this->setFocusPolicy(Qt::NoFocus);
+	//this->setFocusPolicy(Qt::NoFocus);
 	this->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	this->setShowGrid(false);
 	this->setStyleSheet("QTableView {background-color: white; border: 1px solid #7F9DB9; }");
@@ -49,6 +49,11 @@ PositionTable::PositionTable(){
 }
 
 PositionTable::~PositionTable(){}
+
+void PositionTable::focusOutEvent(QFocusEvent * event)
+{
+	this->clearSelection();
+}
 
 void PositionTable::update() {
 	this->clearContents();

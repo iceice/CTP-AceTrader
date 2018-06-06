@@ -16,7 +16,7 @@ LoginDialog::LoginDialog(){
 	this->resize(360,200);
 	mw = new MainWindow();
 	mw->setObjectName("MainWindow");
-	mw->resize(1100, 200);
+	mw->resize(1100, 300);
 	mw->setFocus();
 
 	company = new QLabel("经纪公司");

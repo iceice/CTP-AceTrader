@@ -31,6 +31,11 @@ AccountTable::AccountTable(){
 
 AccountTable::~AccountTable(){}
 
+void AccountTable::focusOutEvent(QFocusEvent * event)
+{
+	this->clearSelection();
+}
+
 void AccountTable::update(){
 	
 	this->clearContents();

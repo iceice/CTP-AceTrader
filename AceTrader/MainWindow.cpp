@@ -13,6 +13,7 @@
 #include <QGridLayout>
 #include <QMenu>
 #include <QMenuBar>
+#include <QSplitter>
 
 using std::shared_ptr;
 using std::make_shared;
@@ -252,10 +253,10 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent){
 
 /********************************************委托与回报**********************************************/
 	QGroupBox *responseBox = new QGroupBox("委托与回报");
-	orderButton = new QPushButton("委托信息");
-	stopMsgButoon = new QPushButton("止损信息");
-	tradeMsgButton = new QPushButton("成交信息");
 	positionButton = new QPushButton("持仓信息");
+	tradeMsgButton = new QPushButton("成交信息");
+	orderButton = new QPushButton("全部委托");
+	stopMsgButoon = new QPushButton("止损信息");
 	accountButton = new QPushButton("资金信息");
 	orderButton->setObjectName("orderButton");
 	stopMsgButoon->setObjectName("stopOrderButton");
@@ -278,13 +279,13 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent){
 	positionButton->setFlat(true);
 	accountButton->setFlat(true);
 	mainButtonGroup = new QButtonGroup();
-	mainButtonGroup->addButton(orderButton, 1);
-	mainButtonGroup->addButton(stopMsgButoon, 2);
-	mainButtonGroup->addButton(tradeMsgButton, 3);
-	mainButtonGroup->addButton(positionButton, 4);
+	mainButtonGroup->addButton(positionButton, 1);
+	mainButtonGroup->addButton(tradeMsgButton, 2);
+	mainButtonGroup->addButton(orderButton, 3);
+	mainButtonGroup->addButton(stopMsgButoon, 4);
 	mainButtonGroup->addButton(accountButton, 5);
 	mainButtonGroup->setExclusive(true);
-	orderButton->setChecked(true);
+	positionButton->setChecked(true);
 	connect(mainButtonGroup, SIGNAL(buttonClicked(int)), this, SLOT(buttonChange(int)));
 	QHBoxLayout *rightUp = new QHBoxLayout();
 	QFrame *rightLine1 = new QFrame();
@@ -303,39 +304,48 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent){
 	withdrawButton = new QPushButton("撤单");
 	withdrawButton->setObjectName("withdrawButton");
 	withdrawButton->setFixedSize(62, 18);
+	withdrawButton->setFocusPolicy(Qt::NoFocus);
 	rightUp->setSpacing(2);
-	rightUp->addWidget(orderButton);
-	rightUp->addWidget(rightLine4);
-	rightUp->addWidget(stopMsgButoon);
-	rightUp->addWidget(rightLine1);
-	rightUp->addWidget(tradeMsgButton);
-	rightUp->addWidget(rightLine2);
 	rightUp->addWidget(positionButton);
+	rightUp->addWidget(rightLine4);
+	rightUp->addWidget(tradeMsgButton);
+	rightUp->addWidget(rightLine1);
+	rightUp->addWidget(orderButton);
+	rightUp->addWidget(rightLine2);
+	rightUp->addWidget(stopMsgButoon);
 	rightUp->addWidget(rightLine3);
 	rightUp->addWidget(accountButton);
 	rightUp->addStretch();
 	rightUp->addWidget(withdrawButton);
-	orderTable = new OrderTable();
-	tradeTable = new SumTable();
 	positionTable = new PositionTable();
-	accountTable = new AccountTable();
+	tradeTable = new SumTable();
+	orderTable = new OrderTable();
 	stopOrderTable = new StopOrderTable();
-
+	accountTable = new AccountTable();
+	
 	stackWidget = new QStackedWidget();
+	stackWidget->addWidget(positionTable);
+	stackWidget->addWidget(tradeTable);
 	stackWidget->addWidget(orderTable);
 	stackWidget->addWidget(stopOrderTable);
-	stackWidget->addWidget(tradeTable);
-	stackWidget->addWidget(positionTable);
 	stackWidget->addWidget(accountTable);
 
 	
 	connect(positionTable, SIGNAL(positonClose(Positions*)), this, SLOT(setpositonClose(Positions*)));
 
+	QSplitter *splitterRight = new QSplitter(Qt::Vertical, 0);
+	partOrderTable = new OrderTable();
+	splitterRight->setHandleWidth(0);
+	splitterRight->addWidget(stackWidget);
+	splitterRight->addWidget(partOrderTable);
+
+	connect(partOrderTable, SIGNAL(cellDoubleClicked(int, int)), this, SLOT(quickCancelOrder(int, int)));
+	
 	QVBoxLayout *right = new QVBoxLayout();
 	right->setSpacing(5);
 	right->addLayout(rightUp);
-	right->addWidget(stackWidget, 0);
-	right->addWidget(new OrderTable());
+	right->addWidget(splitterRight);
+	
 	responseBox->setLayout(right);
 /**********************************************总布局************************************************/
 	setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);
@@ -379,22 +389,13 @@ void MainWindow::initController() {
 	queryController= make_shared<QueryController>();
 	subController= make_shared<SubscribeController>();
 	tradeController = make_shared<TradeController>();
-	//连接按钮与连接控制器连接
-	//connect(connectButton, SIGNAL(clicked()), connectController.get(), SLOT(connectServer()));
-	//connect(connectButton, SIGNAL(clicked()), this, SLOT(connectNoFocus()));
+	
 	connect(settingButton, SIGNAL(clicked()), this, SLOT(showSettingDialog()));
 	//卖，买按钮
 	connect(bsButtonGroup, SIGNAL(buttonClicked(int)), this, SLOT(tradeServer(int)));
 	//撤单按钮
 	connect(withdrawButton, SIGNAL(clicked()), this, SLOT(cancelOrder()));
 
-	/*connect(connectController.get(), SIGNAL(connecting()), this, SLOT(statusConnecting()));
-	connect(connectController.get(), SIGNAL(tradeConnecting()), this, SLOT(tradeStatusConnecting()));
-	connect(connectController.get(), SIGNAL(connectFailed()), this, SLOT(statusConnectFailed()));
-	connect(connectController.get(), SIGNAL(tradeConnectFailed()), this, SLOT(tradeStatusConnectFailed()));
-	connect(connectController.get(), SIGNAL(loginSuccess()), this, SLOT(statusConnectSuccess()));
-	connect(connectController.get(), SIGNAL(loginSuccess()), connectController.get(), SLOT(tradeConnectServer()));
-	connect(connectController.get(), SIGNAL(tradeLoginSuccess()), this, SLOT(tradeStatusConnectSuccess()));*/
 
 	connect(connectController.get(), SIGNAL(connecting()), this, SIGNAL(connecting()));
 	connect(connectController.get(), SIGNAL(connectFailed()), this, SIGNAL(connectFailed()));
@@ -402,8 +403,8 @@ void MainWindow::initController() {
 	connect(connectController.get(), SIGNAL(loginSuccess()), connectController.get(), SLOT(tradeConnectServer()));
 	connect(connectController.get(), SIGNAL(tradeConnecting()), this, SIGNAL(tradeConnecting()));
 	connect(connectController.get(), SIGNAL(tradeConnectFailed()), this, SIGNAL(tradeConnectFailed()));
-
 	connect(connectController.get(), SIGNAL(loginFailed(QString)), this, SIGNAL(loginFailed(QString)));
+
 	/************************************查询部分****************************************/
 	//1、交易登录后，查询是否确认信息
 	connect(connectController.get(), SIGNAL(tradeLoginSuccess()), this, SLOT(tradeStatusConnectSuccess()));
@@ -414,6 +415,7 @@ void MainWindow::initController() {
 	connect(queryController.get(), SIGNAL(queryOrderSuccess()), this, SIGNAL(allSuccess()));
 	//更新表格
 	connect(queryController.get(), SIGNAL(queryOrderSuccess()), orderTable, SLOT(update()));
+	connect(queryController.get(), SIGNAL(queryOrderSuccess()), partOrderTable, SLOT(updatePart()));
 	connect(queryController.get(), SIGNAL(queryOrderSuccess()), stopOrderTable, SLOT(update()));
 	connect(queryController.get(), SIGNAL(queryTradeSuccess()), tradeTable, SLOT(update()));
 	connect(queryController.get(), SIGNAL(queryInvestorPositionSuccess()), subController.get(), SLOT(subscribePositionIns()));
@@ -425,6 +427,7 @@ void MainWindow::initController() {
 	connect(queryController.get(), SIGNAL(querySignal(QString)), this, SIGNAL(querySignal(QString)));
 	
 	connect(tradeController.get(), SIGNAL(updateOrder()), orderTable, SLOT(update()));
+	connect(tradeController.get(), SIGNAL(updateOrder()), partOrderTable, SLOT(updatePart()));
 	connect(tradeController.get(), SIGNAL(updateOrder()), stopOrderTable, SLOT(update()));
 	connect(tradeController.get(), SIGNAL(updateTrade()), tradeTable, SLOT(update()));
 	
@@ -578,32 +581,32 @@ void MainWindow::keyPressEvent(QKeyEvent * k) {
 void MainWindow::buttonChange(int buttonId){
 	if (buttonId == 1) {
 		stackWidget->setCurrentIndex(0);
-		withdrawButton->setEnabled(true);
+		//withdrawButton->setEnabled(true);
 		buyButton->setEnabled(true);
 		sellButton->setEnabled(true);
 	}
 	else if (buttonId == 2) {
 		stackWidget->setCurrentIndex(1);
-		withdrawButton->setEnabled(true);
+		//withdrawButton->setEnabled(true);
 		buyButton->setEnabled(true);
 		sellButton->setEnabled(true);
 	}
 	else if (buttonId == 3) {
 		stackWidget->setCurrentIndex(2);
-		withdrawButton->setEnabled(false);
+		//withdrawButton->setEnabled(false);
 		buyButton->setEnabled(true);
 		sellButton->setEnabled(true);
 	}
 	else if (buttonId == 4) {
 		stackWidget->setCurrentIndex(3);
-		withdrawButton->setEnabled(false);
+		//withdrawButton->setEnabled(false);
 		buyButton->setEnabled(true);
 		sellButton->setEnabled(true);
 	}
 
 	else if (buttonId == 5) {
 		stackWidget->setCurrentIndex(4);
-		withdrawButton->setEnabled(false);
+		//withdrawButton->setEnabled(false);
 		buyButton->setEnabled(true);
 		sellButton->setEnabled(true);
 	}
@@ -637,8 +640,8 @@ void MainWindow::connectNoFocus(){
 
 void MainWindow::tradeServer(int d){
 	
-	orderButton->setChecked(true);
-	mainButtonGroup->buttonClicked(1);
+	buyButton->setEnabled(true);
+	sellButton->setEnabled(true);
 
 	//交易合约
 	QString c = instruCombo->currentText();
@@ -694,21 +697,39 @@ void MainWindow::cancelOrder(){
 	int row = -1;
 	QString id;
 
-	if (stackWidget->currentIndex() == 0) {
+	//全部委托
+	if (stackWidget->currentIndex() == 2 && orderTable->hasFocus()) {
 		row = orderTable->currentRow();
 		if (row >= 0)
 			id = orderTable->item(row, 0)->text();
 		else
 			return;
 	}
-	else {
+	else if(stackWidget->currentIndex() == 3 && stopOrderTable->hasFocus()) {
 		row = stopOrderTable->currentRow();
 		if (row >= 0)
 			id = stopOrderTable->item(row, 0)->text();
 		else
 			return;
 	}
+	else if (partOrderTable->hasFocus()) {
+		row = partOrderTable->currentRow();
+		if (row >= 0)
+			id = partOrderTable->item(row, 0)->text();
+		else
+			return;
+	}
+	else {
+		return;
+	}
 	
+
+	tradeController->reqOrderAction(id);
+}
+
+void MainWindow::quickCancelOrder(int r, int c)
+{
+	QString id = partOrderTable->item(r, 0)->text();
 	tradeController->reqOrderAction(id);
 }
 
